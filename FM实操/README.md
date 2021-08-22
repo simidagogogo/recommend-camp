@@ -32,3 +32,42 @@ $ head data_1.csv
 
 使用FM，评分矩阵，pv为0，buy为1
 
+
+
+## 文件说明
+
+- data_1.csv
+
+  原始数据集
+
+- data_analysis 
+
+  统计原始样本中共有多少个user和item，以及id的取值范围。用于确定fm的超参数M和K
+
+- fm_model.py
+
+  fm模型
+
+- process.py
+
+  原始样本数据处理为fm的数据输入格式（train_data数据文件）
+
+  python3 process.py > train_data
+
+- score
+
+  即为模型对于test集的预估得分，后续用于计算auc
+
+  python3 fm_model.py train_data > score
+
+- label
+
+  测试集，用于计算auc
+
+  tail -n -40000 train_data > label
+
+- auc.py
+
+  计算二分类模型的auc
+
+  python3 auc.py
