@@ -235,7 +235,7 @@ if __name__ == '__main__':
 
     # 1.整合数据集用于GBDT模型训练
     dataOriginal4gbdt = concordanceDataset('./data/')
-    dataProcessed4gbdt = featureOneHot4gdbt(dataOriginal4gbdt)
+    dataProcessed4gbdt = featureOneHot4GBDT(dataOriginal4gbdt)
 
     # 2.用于GBDT模型训练、验证、预测的样本构建
     x_train, x_val, y_train, y_val, train, test, target = buildSamples(dataProcessed4gbdt)
