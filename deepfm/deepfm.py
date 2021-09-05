@@ -20,14 +20,16 @@ print('cols = ', cols)
 dense_cols = [f for f in cols if f[0] == 'I']
 sparse_cols = [f for f in cols if f[0] == 'C']
 
+
 # dense特征处理
 def process_dense_features(data, cols):
     d = data.copy()
     for f in cols:
         d[f] = d[f].fillna(0)
         ss = StandardScaler()
-        d[f] = ss.fit_transform(d[[f]]) # 2d
+        d[f] = ss.fit_transform(d[[f]])  # 2d
     return d
+
 
 # sparse特征处理
 def process_sparse_features(data, cols):
@@ -35,8 +37,9 @@ def process_sparse_features(data, cols):
     for f in cols:
         d[f] = d[f].fillna('-1')
         label_encoder = LabelEncoder()
-        d[f] = label_encoder.fit_transform(d[f]) # 1d
+        d[f] = label_encoder.fit_transform(d[f])  # 1d
     return d
+
 
 data = process_dense_features(data, dense_cols)
 print(data.head())
@@ -67,8 +70,8 @@ def deepfm_model(sparse_columns, dense_columns, train, test):
     # 类别特征
     for col in sparse_columns:
         ## linear_embedding
-        _input = Input(shape=(1,)) # 表示一维向量，且仅有一个元素
-        print("K.int_shape(_input) = ", K.int_shape(_input)) # (None, 1)
+        _input = Input(shape=(1,))  # 表示一维向量，且仅有一个元素
+        print("K.int_shape(_input) = ", K.int_shape(_input))  # (None, 1)
         sparse_input.append(_input)
 
         # 特征空间维度
@@ -79,7 +82,7 @@ def deepfm_model(sparse_columns, dense_columns, train, test):
 
         ## fm_embedding FM的隐向量
         embed = Embedding(nums, 10, input_length=1, embeddings_regularizer=tf.keras.regularizers.l2(0.5))(_input)
-        reshape = Reshape(target_shape=(10,))(embed) # None * 1 * 10 -> None * 10 ?
+        reshape = Reshape(target_shape=(10,))(embed)  # None * 1 * 10 -> None * 10 ?
         fm_embedding.append(reshape)
 
     ## fst_order_sparse_layer ##
@@ -132,7 +135,6 @@ model.compile(optimizer='adam',
               loss='binary_crossentropy',
               metrics=["binary_crossentropy", tf.keras.metrics.AUC(name='auc')])
 
-
 # 数据格式转换
 train_sparse_x = [x_train[f].values for f in sparse_cols]
 print('train_sparse_x = ', train_sparse_x)
@@ -148,6 +150,7 @@ valid_label = [y_valid.values]
 
 # 训练模型
 from keras.callbacks import *
+
 file_path = 'deepfm_model.h5'
 earlystopping = EarlyStopping(monitor='val_auc', patience=3)
 checkpoint = ModelCheckpoint(file_path,
