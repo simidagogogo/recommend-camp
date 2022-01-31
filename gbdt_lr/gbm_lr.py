@@ -133,8 +133,8 @@ def predictAndGetLeaf(model, train, test):
     """
 
     print('train to get leaf: 获取的是每个样本在每棵树上最终落到了第几个叶子节点上')
-    gbdt_features_train = model.predict(train, pred_leaf = True)
-    gbdt_features_test = model.predict(test, pred_leaf = True)
+    gbdt_features_train = model.eval(train, pred_leaf = True)
+    gbdt_features_test = model.eval(test, pred_leaf = True)
 
     # 这里怎么理解？
     print("gbdt_features_train.shape[0]", gbdt_features_train.shape[0])
