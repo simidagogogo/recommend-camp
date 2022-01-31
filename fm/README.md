@@ -43,6 +43,14 @@ $ head data_1.csv
 - data_analysis 
 
   统计原始样本中共有多少个user和item，以及id的取值范围。用于确定fm的超参数M和K
+  
+  ```bash
+  $ wc data_analysis/item_id 
+  629096  629096 4897519 data_analysis/item_id
+  
+  $ wc data_analysis/user_id 
+  19544   19544  138581 data_analysis/user_id
+  ```
 
 - fm_model.py
 

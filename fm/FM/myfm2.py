@@ -27,7 +27,7 @@ W_user = np.random.randn(M)
 W_item = np.random.randn(N)
 
 
-reg = 0.001
+regular = 0.001
 step = 0.01
 
 
@@ -37,45 +37,44 @@ def load_data(path):
 	with open(path) as input:
 		for line in input:
 			arr = line.strip().split("::")	
-			user = int(arr[0])
-			item = int(arr[1])
+			user_id = int(arr[0])
+			item_id = int(arr[1])
 			rating = float(arr[2])
-			data.append((user, item, rating))
+			data.append((user_id, item_id, rating))
 	return data
 
 
-# 用户对电影的评分，省略掉一次项
-def evaluate(user, item):
-	return sum(U[user] * V[item]) + W_user[user] * user + W_item[item] * item
+# 用户对电影的评分
+def evaluate(user_id, item_id):
+	return sum(U[user_id] * V[item_id]) + W_user[user_id] * user_id + W_item[item_id] * item_id
 
 
-# (y - y^hat)^2 + reg * (u_i^2 + v_j^2)
+# (y - y^hat) ^ 2 + reg * (u_i ^ 2 + v_j ^ 2)
 def train(data):
-	for (user, item, rating) in data:
-		pre = evaluate(user, item)
+	for (user_id, item_id, rating) in data:
+		pre = evaluate(user_id, item_id)
 
-		g_U_user = (pre - rating) * V[item] + reg * U[user]
-		g_V_item = (pre - rating) * U[user] + reg * V[item]
+		g_U_user = (pre - rating) * V[item_id] + regular * U[user_id]
+		g_V_item = (pre - rating) * U[user_id] + regular * V[item_id]
 
-		g_W_user = user
-		g_W_item = item
+		g_W_user = user_id
+		g_W_item = item_id
 
-		U[user] -= step * g_U_user
-		V[item] -= step * g_V_item
+		U[user_id] -= step * g_U_user
+		V[item_id] -= step * g_V_item
 
-		W_user[user] -= step * g_W_user;
-		W_item[item] -= step * g_W_item;
+		W_user[user_id] -= step * g_W_user;
+		W_item[item_id] -= step * g_W_item;
 
 # 计算rmse
 def rmse(data):
 	n = 0
-	s = 0
-	for (user, item, rating) in data:
-		pre = evaluate(user, item)
-		s += (pre - rating) ** 2
+	sum = 0
+	for (user_id, item_id, rating) in data:
+		pre = evaluate(user_id, item_id)
+		sum += (pre - rating) ** 2
 		n += 1
-
-	return np.sqrt(s/n)		
+	return np.sqrt(sum/n)
 
 # 开始训练
 data = load_data(sys.argv[1])
