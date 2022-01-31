@@ -117,8 +117,8 @@ class FmModel:
                                                                                           ctr, pos_sum))
         return (pos_sum - pos_num * (pos_num - 1) / 2) / (pos_num * neg_num)
 
-    def run(self):
-        data = self.load_data(sys.argv[1])
+    def run(self, path):
+        data = self.load_data(path)
         print("total data number = {}".format(len(data)))
         print(data[:10])
 
@@ -165,7 +165,7 @@ class FmModel:
 if __name__ == '__main__':
     model = FmModel(epoch=10)
     # model.test()
-    model.run()
+    model.run(sys.argv[1])
     # current epoch = 9, train_rmse = 0.20807383292719187, valid_rmse = 0.20522135618991014
     # current epoch = 9, train_auc = 0.7461407058782095, valid_auc = 0.7948982665243784
     # final test rmse = 0.19101947801478666, test_auc = 0.8509381238251637
