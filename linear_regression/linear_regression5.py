@@ -7,7 +7,7 @@ import numpy
 import tensorflow as tf
 
 learning_rate = 0.01
-training_epochs = 1000
+epochs = 1000
 display_step = 50
 
 train_X = numpy.linspace(0, 100, 50)
@@ -22,19 +22,18 @@ Y = tf.placeholder("float", name='Y')
 W = tf.Variable(numpy.random.randn(), name="weight")
 b = tf.Variable(numpy.random.randn(), name="bias")
 
-pred = tf.add(tf.multiply(X, W), b)
-loss = tf.reduce_sum(tf.pow(pred - Y, 2)) / (2 * n_samples) # MSE, 或者tf.reduce_mean(tf.pow(pred - Y, 2)) / 2（写法很多）
+predict = tf.add(tf.multiply(X, W), b)
+# MSE, 或者tf.reduce_mean(tf.pow(pred - Y, 2)) / 2（写法很多）
+loss = tf.reduce_sum(tf.pow(predict - Y, 2)) / (2 * n_samples)
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 
 with tf.Session() as sess:
-    init_op = tf.initialize_all_variables()
-    sess.run(init_op)
-
-    for epoch in range(training_epochs):
+    sess.run(tf.initialize_all_variables())
+    for epoch in range(epochs):
         for (x, y) in zip(train_X, train_Y):
-            _, W_, b_, cost_ = sess.run([optimizer, W, b, loss], feed_dict={X: x, Y: y})
-
-        if epoch % 100 == 0:
+            _, W_, b_, cost_ = sess.run([optimizer, W, b, loss],
+                                        feed_dict={X: x, Y: y})
+        if epoch % display_step == 0:
             print("epoch = {}, w = {}, b = {}, cost = {}".format(epoch, W_, b_, cost_))
 
     print("优化完成!")

@@ -12,30 +12,31 @@ y_data = np.array([0, -1, -2, -3])
 # 创建一个graph对象
 graph = tf.Graph()
 with graph.as_default():
-    W = tf.Variable(0.3, dtype=tf.float32, name='weight')   # Variable必须初始化，可以随便赋一个初值
-    b = tf.Variable(-0.3, dtype=tf.float32, name='bias')    # Variable 是全局变量
-    x = tf.placeholder(tf.float32, name='x')                # placeholder为占位符变量，使用时一定要传值
-    y = tf.placeholder(tf.float32, name='y')                # x和y都默认为一位数组
+    with tf.variable_scope("linear_regression"):
+        W = tf.Variable(0.3, dtype=tf.float32, shape=[], name='weight')  # Variable必须初始化，可以随便赋一个初值
+        b = tf.Variable(-0.3, dtype=tf.float32, shape=[], name='bias')  # Variable 是全局变量
 
-    predict = tf.add(tf.multiply(W, x), b)
+        # shape=None表示自动推断维度
+        x = tf.placeholder(tf.float32, shape=[4,], name='x')  # placeholder为占位符变量，使用时一定要传值
+        y = tf.placeholder(tf.float32, shape=[4,], name='y')  # x和y都默认为一位数组
 
-    loss = tf.reduce_mean(tf.square(predict - y))
+        predict = tf.add(tf.multiply(x, W), b)
 
-    # 使用梯度下降, GradientDescentOptimizer是优化器Optimizer的子类，创建梯度下降算法优化器的对象optimizer
-    optimizer = tf.train.GradientDescentOptimizer(0.01)
+        loss = tf.reduce_mean(tf.square(predict - y))
 
-    # 调用minimize()方法，得到一个train操作对象
-    train_op = optimizer.minimize(loss)
+        # 使用梯度下降, GradientDescentOptimizer是优化器Optimizer的子类，创建梯度下降算法优化器的对象optimizer
+        optimizer = tf.train.GradientDescentOptimizer(0.01)
+
+        # 调用minimize()方法，得到一个train操作对象
+        train_op = optimizer.minimize(loss)
 
 # 创建session运行计算图
-with tf.Session(graph = graph) as sess:
-    init = tf.global_variables_initializer()
-    sess.run(init)
-
+with tf.Session(graph=graph) as sess:
+    sess.run(tf.global_variables_initializer())
     for i in range(1000):
         _, W_, b_, loss_ = sess.run([train_op, W, b, loss],
-                                    feed_dict = {x: x_data, y: y_data})
-
+                                    feed_dict={x: x_data,
+                                               y: y_data})
         if i % 100 == 0:
             print("step = {}, W_ = {}, b_ = {}, loss_ = {}".format(i, W_, b_, loss_))
 

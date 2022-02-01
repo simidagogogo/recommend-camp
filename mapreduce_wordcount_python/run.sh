@@ -2,7 +2,7 @@
 HADOOP_CMD="/usr/local/share/hadoop-2.10.1/bin/hadoop"
 STREAM_JAR_PATH="/usr/local/share/hadoop-2.10.1/share/hadoop/tools/lib/hadoop-streaming-2.10.1.jar"
 
-INPUT_FILE_PATH_1="/The_Man_of_Property.txt"
+INPUT_FILE_PATH_1="./The_Man_of_Property.txt"
 #INPUT_FILE_PATH_1="/1.data"
 
 OUTPUT_PATH="/output"
