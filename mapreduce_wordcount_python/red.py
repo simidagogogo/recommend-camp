@@ -15,7 +15,7 @@ for line in sys.stdin:
     if current_word != word:
         for count in count_pool:
             sum += count
-        print "%s\t%s" % (current_word, sum)
+        print("%s\t%s" % (current_word, sum))
         current_word = word
         count_pool = []
         sum = 0
@@ -24,5 +24,5 @@ for line in sys.stdin:
 
 for count in count_pool:
     sum += count
-print "%s\t%s" % (current_word, str(sum))
+print("%s\t%s" % (current_word, str(sum)))
 

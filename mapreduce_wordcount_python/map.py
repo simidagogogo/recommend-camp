@@ -8,5 +8,5 @@ for line in sys.stdin:
     for s in ss:
         #time.sleep(100000)
         if s.strip() != "":
-            print "%s\t%s" % (s, 1)
+            print("%s\t%s" % (s, 1))
 
